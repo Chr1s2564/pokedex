@@ -5,10 +5,14 @@ import (
 	"os"
 )
 
+type config struct {
+	commands map[string]cliCommand
+}
+
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -26,17 +30,16 @@ func getCommands() map[string]cliCommand {
 	}
 }
 
-func commandExit() error {
+func commandExit(cfg *config) error {
 	fmt.Print("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp() error {
+func commandHelp(cfg *config) error {
 	fmt.Print("Welcome to the Pokedex!\nUsage:\n\n")
-	commandList := getCommands()
-	for _, command := range commandList {
-		fmt.Printf("%s: %s\n", command.name, command.description)
+	for id, _ := range cfg.commands {
+		fmt.Printf("%s: %s\n", cfg.commands[id].name, cfg.commands[id].description)
 	}
 	return nil
 }

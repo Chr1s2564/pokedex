@@ -14,19 +14,25 @@ func cleanInput(input string) []string {
 	return words
 }
 
-func startRepl() error {
-	commandList := getCommands()
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
 		input := scanner.Text()
 		cleaned := cleanInput(input)
-		command, exists := commandList[cleaned[0]]
+		if len(cleaned) == 0 {
+			continue
+		}
+		command, exists := cfg.commands[cleaned[0]]
 		if !exists {
 			fmt.Print("Unknown command\n")
 		} else {
-			command.callback()
+			err := command.callback(cfg)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
 		}
 	}
 }

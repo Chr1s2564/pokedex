@@ -3,5 +3,8 @@ package main
 //import "fmt"
 
 func main() {
-	startRepl()
+	cfg := &config{
+		commands: getCommands(),
+	}
+	startRepl(cfg)
 }
