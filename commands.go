@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"pokedex/internal/pokeapi"
 )
 
 type config struct {
 	commands    map[string]cliCommand
 	nextUrl     string
 	previousUrl string
+	client      *pokeapi.Client
 }
 
 type cliCommand struct {

@@ -19,7 +19,17 @@ type LocationArea struct {
 	Results  []LocationAreaResult
 }
 
-func GetAreas(mapUrl string) (LocationArea, error) {
+func (c *Client) GetAreas(mapUrl string) (LocationArea, error) {
+	data, ok := c.cache.Get(mapUrl)
+	if ok {
+		var results = LocationArea{}
+		err := json.Unmarshal(data, &results)
+		if err != nil {
+			return LocationArea{}, err
+		}
+		return results, nil
+	}
+
 	req, err := http.NewRequest("GET", mapUrl, nil)
 	if err != nil {
 		return LocationArea{}, fmt.Errorf("error creating request: %v", err)
@@ -35,6 +45,11 @@ func GetAreas(mapUrl string) (LocationArea, error) {
 	reader, err := io.ReadAll(res.Body)
 	if err != nil {
 		return LocationArea{}, fmt.Errorf("error reading body: %v", err)
+	}
+	if res.StatusCode > 199 && res.StatusCode < 300 {
+		c.cache.Add(mapUrl, reader)
+	} else {
+		return LocationArea{}, fmt.Errorf("error status code: %v", res.StatusCode)
 	}
 
 	var results = LocationArea{}

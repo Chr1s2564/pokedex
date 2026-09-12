@@ -4,12 +4,12 @@ import (
 	"fmt"
 )
 
-func GetPrevious(previousUrl string) (LocationArea, error) {
+func (c *Client) GetPrevious(previousUrl string) (LocationArea, error) {
 	if previousUrl == "" {
 		return LocationArea{}, fmt.Errorf("you're on the first page")
 	}
 	mapUrl := previousUrl
-	areas, err := GetAreas(mapUrl)
+	areas, err := c.GetAreas(mapUrl)
 	if err != nil {
 		return LocationArea{}, fmt.Errorf("error retrieving previous areas: %v", err)
 	}

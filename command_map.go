@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"pokedex/internal/pokeapi"
 )
 
 func displayMap(cfg *config) error {
-	areas, err := pokeapi.GetAreas(cfg.nextUrl)
+	areas, err := cfg.client.GetAreas(cfg.nextUrl)
 	if err != nil {
 		return fmt.Errorf("unable to retrieve areas: %v", err)
 	}
