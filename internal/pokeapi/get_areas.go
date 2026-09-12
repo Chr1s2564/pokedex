@@ -19,8 +19,7 @@ type LocationArea struct {
 	Results  []LocationAreaResult
 }
 
-func GetAreas() (LocationArea, error) {
-	const mapUrl = "https://pokeapi.co/api/v2/location-area/"
+func GetAreas(mapUrl string) (LocationArea, error) {
 	req, err := http.NewRequest("GET", mapUrl, nil)
 	if err != nil {
 		return LocationArea{}, fmt.Errorf("error creating request: %v", err)
