@@ -4,7 +4,10 @@ import (
 	"fmt"
 )
 
-func displayMap(cfg *config) error {
+func displayMap(cfg *config, arg string) error {
+	if arg != "" {
+		return fmt.Errorf("map command doesn't take any argument")
+	}
 	areas, err := cfg.client.GetAreas(cfg.nextUrl)
 	if err != nil {
 		return fmt.Errorf("unable to retrieve areas: %v", err)

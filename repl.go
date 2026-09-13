@@ -28,10 +28,18 @@ func startRepl(cfg *config) {
 		if !exists {
 			fmt.Print("Unknown command\n")
 		} else {
-			err := command.callback(cfg)
-			if err != nil {
-				fmt.Println(err)
-				continue
+			if len(cleaned) < 2 {
+				err := command.callback(cfg, "")
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+			} else {
+				err := command.callback(cfg, cleaned[1])
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
 			}
 		}
 	}

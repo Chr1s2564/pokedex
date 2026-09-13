@@ -16,7 +16,7 @@ type config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -41,16 +41,27 @@ func getCommands() map[string]cliCommand {
 			description: "Displays the 20 previous location areas, if available",
 			callback:    displayMapb,
 		},
+		"explore": {
+			name:        "explore",
+			description: "Explores the given location (takes a location argument)",
+			callback:    displayExplore,
+		},
 	}
 }
 
-func commandExit(cfg *config) error {
+func commandExit(cfg *config, arg string) error {
+	if arg != "" {
+		return fmt.Errorf("exit command doesn't take any argument")
+	}
 	fmt.Print("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(cfg *config) error {
+func commandHelp(cfg *config, arg string) error {
+	if arg != "" {
+		return fmt.Errorf("help command doesn't take any argument")
+	}
 	fmt.Print("Welcome to the Pokedex!\nUsage:\n\n")
 	for id, _ := range cfg.commands {
 		fmt.Printf("%s: %s\n", cfg.commands[id].name, cfg.commands[id].description)
