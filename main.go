@@ -11,6 +11,7 @@ func main() {
 		nextUrl:     "https://pokeapi.co/api/v2/location-area/",
 		previousUrl: "",
 		client:      pokeapi.NewClient(5 * time.Second),
+		pokedex:     make(map[string]pokeapi.CatchPokemon),
 	}
 	startRepl(cfg)
 }
